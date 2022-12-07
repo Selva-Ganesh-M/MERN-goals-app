@@ -2,9 +2,11 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 
 const goalsRouter = require("./routers/goalsRouter");
+const connectToDb = require("./config/db");
 const { errorHandler } = require("./middlewares/errorHandler");
 
 const port = process.env.PORT || 5000;
+
 const server = express();
 
 server.use((req, res, next) => {
@@ -13,10 +15,15 @@ server.use((req, res, next) => {
   return next();
 });
 
+server.use(express.json());
+server.use(express.urlencoded({ extended: false }));
+
 server.use("/api/goals", goalsRouter);
 
 server.use(errorHandler);
 
-server.listen(port, () => {
-  console.log(`Server is listening at port ${port}.`);
+connectToDb().then(() => {
+  server.listen(port, () => {
+    console.log(`Server is listening at port ${port}.`);
+  });
 });
