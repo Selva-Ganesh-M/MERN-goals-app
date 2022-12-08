@@ -4,6 +4,7 @@ const dotenv = require("dotenv").config();
 const goalsRouter = require("./routers/goalsRouter");
 const connectToDb = require("./config/db");
 const { errorHandler } = require("./middlewares/errorHandler");
+const userRouter = require("./routers/userRoutes");
 
 const port = process.env.PORT || 5000;
 
@@ -19,6 +20,7 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 
 server.use("/api/goals", goalsRouter);
+server.use("/api/users", userRouter);
 
 server.use(errorHandler);
 

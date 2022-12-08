@@ -6,6 +6,9 @@ const {
   updateGoal,
   deleteGoal,
 } = require("../controllers/goalsController");
+const authHandler = require("../middlewares/authHandler");
+
+router.use(authHandler);
 
 router.route("/").get(getGoals).post(createGoal);
 
