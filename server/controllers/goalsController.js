@@ -3,7 +3,6 @@ const { default: mongoose, isValidObjectId } = require("mongoose");
 const Goal = require("../models/goalModel");
 
 const getGoals = asyncHandler(async (req, res) => {
-  console.log(req.user);
   const { _id } = req.user._id;
   const goals = await Goal.find({ user: _id });
   res.status(200).json(goals);
@@ -23,14 +22,12 @@ const updateGoal = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("invalid _id value");
   }
-  console.log(req.body);
   if (!req.body || !req.body.text) {
     res.status(400);
     throw new Error("data fields missing");
   }
   const goal = await Goal.findOne({ _id: req.params.id });
   if (!(goal.user.toString() === req.user._id.toString())) {
-    console.log("inside if");
     res.status(401);
     throw new Error("user is not authorized to perform this task.");
   }
@@ -49,18 +46,15 @@ const updateGoal = asyncHandler(async (req, res) => {
 });
 
 const deleteGoal = asyncHandler(async (req, res) => {
-  console.log(req.user);
   if (!isValidObjectId(req.params.id)) {
     throw new Error("Invalid object id");
   }
   const goal = await Goal.findOne({ _id: req.params.id });
   if (!(goal.user.toString() === req.user._id.toString())) {
-    console.log("inside if");
     res.status(401);
     throw new Error("user is not authorized to perform this task.");
   }
   // const deletedGoal = await Goal.findOneAndDelete({ _id: req.params.id });
-  console.log("after if");
   const deletedGoal = await goal.remove();
   if (!deletedGoal) {
     res.status(400);

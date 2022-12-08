@@ -1,13 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUser } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
+import { reset, signin } from "../features/authSlice";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  // state affectors
+  const { user, isLoading, message, isError, isSuccess } = useSelector(
+    (state) => state.auth
+  );
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const { name, email, password, password2 } = formData;
+  useEffect(() => {
+    if (isError) {
+      console.log("error here");
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [user, isError, isLoading, isSuccess, message, dispatch, navigate]);
+
+  // local affectors
+  const { email, password } = formData;
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -16,9 +43,23 @@ const Login = () => {
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    const userData = {
+      email,
+      password,
+    };
+    console.log("dispatching signin");
+    await dispatch(signin(userData));
   };
+
+  if (isLoading) {
+    return (
+      <>
+        <Spinner />
+      </>
+    );
+  }
 
   return (
     <>
