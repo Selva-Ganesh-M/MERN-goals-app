@@ -40,10 +40,16 @@ h3 {
   max-width: 960px;
   margin: 0 auto;
   padding: 0 20px;
+  padding-bottom: 3em;
   text-align: center;
+  margin-bottom: 3em;
 }
 
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -89,13 +95,14 @@ h3 {
 .goals {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  margin: 2em 0;
 }
 
 .goal {
   background-color: #f4f4f4;
   margin: 10px 0;
   padding: 20px 0 10px;
+  margin: 10px 10px;
   position: relative;
 }
 
@@ -129,9 +136,14 @@ h3 {
   font-family: inherit;
 }
 
+.form-group input {
+  margin-top: 1em;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
+}
+
 .form-group label {
-  text-align: left;
-  display: block;
+  text-align: center;
+  font-weight: bold;
   margin: 0 0 5px 3px;
 }
 
